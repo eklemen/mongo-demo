@@ -15,63 +15,22 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/populatedb", { useNewUrlParser: true });
-
-// db.Author.create({ name: "Ernest Hemingway" })
-//   .then(dbAuthor => {
-//     console.log(dbAuthor);
-//   })
-//   .catch(({ message }) => {
-//     console.log(message);
-//   });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/library", { useNewUrlParser: true });
 
 app.get("/books", (req, res) => {
-  db.Book.find({})
-    .then(dbBook => {
-      res.json(dbBook);
-    })
-    .catch(err => {
-      res.json(err);
-    });
+  // GET books collection
 });
 
 app.get("/authors", (req, res) => {
-  db.Author.find({})
-    .then(dbAuthor => {
-      res.json(dbAuthor);
-    })
-    .catch(err => {
-      res.json(err);
-    });
+  // GET the authors collection
 });
 
 app.post("/submit", ({ body }, res) => {
-  console.log('-------->', body);
-  db.Book.create({title: body.title})
-    .then(({ _id }) => {
-      return db.Author.findOneAndUpdate(
-          {name: body.author},
-          { $push: { books: _id } },
-          { upsert: true, useFindAndModify: false, new: true }
-        )
-    })
-    .then(dbAuthor => {
-      res.json(dbAuthor);
-    })
-    .catch(err => {
-      res.json(err);
-    });
+  // POST create a new entry
 });
 
 app.get("/authorsWithBooks", (req, res) => {
-  db.Author.find({})
-    .populate("books")
-    .then(dbAuthor => {
-      res.json(dbAuthor);
-    })
-    .catch(err => {
-      res.json(err);
-    });
+  // GET populate the books documents for each author
 });
 
 app.listen(PORT, () => {
