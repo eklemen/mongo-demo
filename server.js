@@ -15,15 +15,7 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/populatedb", { useNewUrlParser: true });
-
-// db.Author.create({ name: "Ernest Hemingway" })
-//   .then(dbAuthor => {
-//     console.log(dbAuthor);
-//   })
-//   .catch(({ message }) => {
-//     console.log(message);
-//   });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/library", { useNewUrlParser: true });
 
 app.get("/books", (req, res) => {
   db.Book.find({})
